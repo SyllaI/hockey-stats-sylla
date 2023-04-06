@@ -1,0 +1,35 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  address: String
+  sub: String
+}
+
+type UntitledModel @model @auth(rules: [{allow: public}]) {
+  id: ID!
+}
+
+type PlayerSeason @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  numberOfGoals: Int
+  numberOfAssists: Int
+  seasonID: ID! @index(name: "bySeason")
+  playerID: ID! @index(name: "byPlayer")
+}
+
+type Season @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Year: String
+  PlayerSeasons: [PlayerSeason] @hasMany(indexName: "bySeason", fields: ["id"])
+}
+
+type Player @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  season: String
+  numberOfGoals: Int
+  numberOfAssist: Int
+  adminSub: AWSEmail
+  PlayerSeasons: [PlayerSeason] @hasMany(indexName: "byPlayer", fields: ["id"])
+}
+ 

@@ -1,0 +1,23 @@
+[
+    {
+      "playerID": "1",
+      "name": "Mj Iraldi",
+      "season": "2023",
+      "numberOfGoals": 9,
+      "numberOfAssists": 2
+    },
+    {
+        "playerID": "2",
+        "name": "Amir Warrick",
+        "season": "2023",
+        "numberOfGoals": 4,
+        "numberOfAssists": 7
+      },
+    {
+        "playerID": "3",
+        "name": "Nigel Haughton",
+        "season": "2023",
+        "numberOfGoals": 8,
+        "numberOfAssists": 5
+      }
+  ]

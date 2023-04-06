@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hockeystats-staging-140053-authRole",
+      "UnauthRoleArn": "arn:aws:iam::446582417190:role/amplify-hockeystats-staging-140053-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::446582417190:role/amplify-hockeystats-staging-140053-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-hockeystats-staging-140053-deployment",
+      "UnauthRoleName": "amplify-hockeystats-staging-140053-unauthRole",
+      "StackName": "amplify-hockeystats-staging-140053",
+      "StackId": "arn:aws:cloudformation:us-east-1:446582417190:stack/amplify-hockeystats-staging-140053/20988a80-c983-11ed-a078-0a23d4d41a8f",
+      "AmplifyAppId": "d3j6tmtd2yclrl"
+    },
+    "categories": {
+      "auth": {
+        "HockeyStats": {}
+      }
+    }
+  }
+}
