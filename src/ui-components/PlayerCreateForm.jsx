@@ -28,6 +28,7 @@ export default function PlayerCreateForm(props) {
     numberOfGoals: "",
     numberOfAssist: "",
     adminSub: "",
+    team: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [season, setSeason] = React.useState(initialValues.season);
@@ -38,6 +39,7 @@ export default function PlayerCreateForm(props) {
     initialValues.numberOfAssist
   );
   const [adminSub, setAdminSub] = React.useState(initialValues.adminSub);
+  const [team, setTeam] = React.useState(initialValues.team);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
@@ -45,6 +47,7 @@ export default function PlayerCreateForm(props) {
     setNumberOfGoals(initialValues.numberOfGoals);
     setNumberOfAssist(initialValues.numberOfAssist);
     setAdminSub(initialValues.adminSub);
+    setTeam(initialValues.team);
     setErrors({});
   };
   const validations = {
@@ -53,15 +56,17 @@ export default function PlayerCreateForm(props) {
     numberOfGoals: [],
     numberOfAssist: [],
     adminSub: [{ type: "Email" }],
+    team: [],
   };
   const runValidationTasks = async (
     fieldName,
     currentValue,
     getDisplayValue
   ) => {
-    const value = getDisplayValue
-      ? getDisplayValue(currentValue)
-      : currentValue;
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -84,6 +89,7 @@ export default function PlayerCreateForm(props) {
           numberOfGoals,
           numberOfAssist,
           adminSub,
+          team,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -143,6 +149,7 @@ export default function PlayerCreateForm(props) {
               numberOfGoals,
               numberOfAssist,
               adminSub,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -171,6 +178,7 @@ export default function PlayerCreateForm(props) {
               numberOfGoals,
               numberOfAssist,
               adminSub,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.season ?? value;
@@ -203,6 +211,7 @@ export default function PlayerCreateForm(props) {
               numberOfGoals: value,
               numberOfAssist,
               adminSub,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.numberOfGoals ?? value;
@@ -235,6 +244,7 @@ export default function PlayerCreateForm(props) {
               numberOfGoals,
               numberOfAssist: value,
               adminSub,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.numberOfAssist ?? value;
@@ -263,6 +273,7 @@ export default function PlayerCreateForm(props) {
               numberOfGoals,
               numberOfAssist,
               adminSub: value,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.adminSub ?? value;
@@ -276,6 +287,35 @@ export default function PlayerCreateForm(props) {
         errorMessage={errors.adminSub?.errorMessage}
         hasError={errors.adminSub?.hasError}
         {...getOverrideProps(overrides, "adminSub")}
+      ></TextField>
+      <TextField
+        label="Team"
+        isRequired={false}
+        isReadOnly={false}
+        value={team}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              season,
+              numberOfGoals,
+              numberOfAssist,
+              adminSub,
+              team: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.team ?? value;
+          }
+          if (errors.team?.hasError) {
+            runValidationTasks("team", value);
+          }
+          setTeam(value);
+        }}
+        onBlur={() => runValidationTasks("team", team)}
+        errorMessage={errors.team?.errorMessage}
+        hasError={errors.team?.hasError}
+        {...getOverrideProps(overrides, "team")}
       ></TextField>
       <Flex
         justifyContent="space-between"

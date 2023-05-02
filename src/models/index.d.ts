@@ -140,6 +140,7 @@ type EagerPlayer = {
   readonly numberOfAssist?: number | null;
   readonly adminSub?: string | null;
   readonly PlayerSeasons?: (PlayerSeason | null)[] | null;
+  readonly team?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -156,6 +157,7 @@ type LazyPlayer = {
   readonly numberOfAssist?: number | null;
   readonly adminSub?: string | null;
   readonly PlayerSeasons: AsyncCollection<PlayerSeason>;
+  readonly team?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

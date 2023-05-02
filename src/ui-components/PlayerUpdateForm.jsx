@@ -14,7 +14,7 @@ import { DataStore } from "aws-amplify";
 export default function PlayerUpdateForm(props) {
   const {
     id: idProp,
-    player,
+    player: playerModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -29,6 +29,7 @@ export default function PlayerUpdateForm(props) {
     numberOfGoals: "",
     numberOfAssist: "",
     adminSub: "",
+    team: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [season, setSeason] = React.useState(initialValues.season);
@@ -39,6 +40,7 @@ export default function PlayerUpdateForm(props) {
     initialValues.numberOfAssist
   );
   const [adminSub, setAdminSub] = React.useState(initialValues.adminSub);
+  const [team, setTeam] = React.useState(initialValues.team);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = playerRecord
@@ -49,16 +51,19 @@ export default function PlayerUpdateForm(props) {
     setNumberOfGoals(cleanValues.numberOfGoals);
     setNumberOfAssist(cleanValues.numberOfAssist);
     setAdminSub(cleanValues.adminSub);
+    setTeam(cleanValues.team);
     setErrors({});
   };
-  const [playerRecord, setPlayerRecord] = React.useState(player);
+  const [playerRecord, setPlayerRecord] = React.useState(playerModelProp);
   React.useEffect(() => {
     const queryData = async () => {
-      const record = idProp ? await DataStore.query(Player, idProp) : player;
+      const record = idProp
+        ? await DataStore.query(Player, idProp)
+        : playerModelProp;
       setPlayerRecord(record);
     };
     queryData();
-  }, [idProp, player]);
+  }, [idProp, playerModelProp]);
   React.useEffect(resetStateValues, [playerRecord]);
   const validations = {
     name: [{ type: "Required" }],
@@ -66,15 +71,17 @@ export default function PlayerUpdateForm(props) {
     numberOfGoals: [],
     numberOfAssist: [],
     adminSub: [{ type: "Email" }],
+    team: [],
   };
   const runValidationTasks = async (
     fieldName,
     currentValue,
     getDisplayValue
   ) => {
-    const value = getDisplayValue
-      ? getDisplayValue(currentValue)
-      : currentValue;
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -97,6 +104,7 @@ export default function PlayerUpdateForm(props) {
           numberOfGoals,
           numberOfAssist,
           adminSub,
+          team,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -157,6 +165,7 @@ export default function PlayerUpdateForm(props) {
               numberOfGoals,
               numberOfAssist,
               adminSub,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -185,6 +194,7 @@ export default function PlayerUpdateForm(props) {
               numberOfGoals,
               numberOfAssist,
               adminSub,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.season ?? value;
@@ -217,6 +227,7 @@ export default function PlayerUpdateForm(props) {
               numberOfGoals: value,
               numberOfAssist,
               adminSub,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.numberOfGoals ?? value;
@@ -249,6 +260,7 @@ export default function PlayerUpdateForm(props) {
               numberOfGoals,
               numberOfAssist: value,
               adminSub,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.numberOfAssist ?? value;
@@ -277,6 +289,7 @@ export default function PlayerUpdateForm(props) {
               numberOfGoals,
               numberOfAssist,
               adminSub: value,
+              team,
             };
             const result = onChange(modelFields);
             value = result?.adminSub ?? value;
@@ -291,6 +304,35 @@ export default function PlayerUpdateForm(props) {
         hasError={errors.adminSub?.hasError}
         {...getOverrideProps(overrides, "adminSub")}
       ></TextField>
+      <TextField
+        label="Team"
+        isRequired={false}
+        isReadOnly={false}
+        value={team}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              season,
+              numberOfGoals,
+              numberOfAssist,
+              adminSub,
+              team: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.team ?? value;
+          }
+          if (errors.team?.hasError) {
+            runValidationTasks("team", value);
+          }
+          setTeam(value);
+        }}
+        onBlur={() => runValidationTasks("team", team)}
+        errorMessage={errors.team?.errorMessage}
+        hasError={errors.team?.hasError}
+        {...getOverrideProps(overrides, "team")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
@@ -302,7 +344,7 @@ export default function PlayerUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || player)}
+          isDisabled={!(idProp || playerModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -314,7 +356,7 @@ export default function PlayerUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || player) ||
+              !(idProp || playerModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

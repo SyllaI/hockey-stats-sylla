@@ -18,10 +18,6 @@ const SideMenu = () =>{
         label: 'Create Player'
     },
     {
-        key:'Season',
-        label: 'Season'
-    },
-    {
         key: 'signout',
         label: 'Sign Out'
     },

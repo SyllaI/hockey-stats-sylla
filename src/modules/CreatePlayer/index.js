@@ -9,6 +9,9 @@ const CreatePlayer = () => {
   const [season, setSeason] = useState("");
   const [numberOfGoals, setNumOfGoals] = useState(0);
   const [numberOfAssist, setNumOfAssists] = useState(0);
+  const [team, setTeam] = useState("");
+
+
 
   const { setPlayer, player } = usePlayerContext();
 
@@ -20,6 +23,7 @@ const CreatePlayer = () => {
     setSeason(player.season);
     setNumOfGoals(player.numberOfGoals);
     setNumOfAssists(player.numberOfAssist);
+    setTeam(player.team);
   }, [player]);
 
   const onFinish = async () => {
@@ -39,24 +43,13 @@ const CreatePlayer = () => {
       message.error("Number of assists required!");
       return;
     }
+    if (!team) {
+      message.error("Name of team required!");
+      return;
+    }
     if (!player) {
       await createNewPlayer();
-    } else {
-      await updatePlayer();
-    }
-  };
-
-  const updatePlayer = async () => {
-    const updatedPlayer = await DataStore.save(
-      Player.copyOf(player, (updated) => {
-        updated.name = name;
-        updated.season = season;
-        updated.numberOfGoals = numberOfGoals;
-        updated.numberOfAssist = numberOfAssist;
-      })
-    );
-    setPlayer(updatedPlayer);
-    message.success("Player updated!");
+    } 
   };
 
   const createNewPlayer = async () => {
@@ -65,6 +58,7 @@ const CreatePlayer = () => {
       season,
       numberOfGoals,
       numberOfAssist,
+      team,
     });
     await DataStore.save(newPlayer);
     setPlayer(newPlayer);
@@ -102,6 +96,13 @@ const CreatePlayer = () => {
             type="number"
             value={numberOfAssist}
             onChange={(e) => setNumOfAssists(Number(e.target.value))}
+          />
+        </Form.Item>
+        <Form.Item label={"Team"} required>
+          <Input
+            placeholder="Enter name of team"
+            value={team}
+            onChange={(e) => setTeam(e.target.value)}
           />
         </Form.Item>
 

@@ -18,6 +18,7 @@ export declare type PlayerCreateFormInputValues = {
     numberOfGoals?: number;
     numberOfAssist?: number;
     adminSub?: string;
+    team?: string;
 };
 export declare type PlayerCreateFormValidationValues = {
     name?: ValidationFunction<string>;
@@ -25,6 +26,7 @@ export declare type PlayerCreateFormValidationValues = {
     numberOfGoals?: ValidationFunction<number>;
     numberOfAssist?: ValidationFunction<number>;
     adminSub?: ValidationFunction<string>;
+    team?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type PlayerCreateFormOverridesProps = {
@@ -34,6 +36,7 @@ export declare type PlayerCreateFormOverridesProps = {
     numberOfGoals?: PrimitiveOverrideProps<TextFieldProps>;
     numberOfAssist?: PrimitiveOverrideProps<TextFieldProps>;
     adminSub?: PrimitiveOverrideProps<TextFieldProps>;
+    team?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type PlayerCreateFormProps = React.PropsWithChildren<{
     overrides?: PlayerCreateFormOverridesProps | undefined | null;

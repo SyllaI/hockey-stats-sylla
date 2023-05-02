@@ -31,5 +31,6 @@ type Player @model @auth(rules: [{allow: public}]) {
   numberOfAssist: Int
   adminSub: AWSEmail
   PlayerSeasons: [PlayerSeason] @hasMany(indexName: "byPlayer", fields: ["id"])
+  team: String
 }
  

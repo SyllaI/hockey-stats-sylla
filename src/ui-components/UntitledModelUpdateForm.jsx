@@ -14,7 +14,7 @@ import { DataStore } from "aws-amplify";
 export default function UntitledModelUpdateForm(props) {
   const {
     id: idProp,
-    untitledModel,
+    untitledModel: untitledModelModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -31,17 +31,18 @@ export default function UntitledModelUpdateForm(props) {
       : initialValues;
     setErrors({});
   };
-  const [untitledModelRecord, setUntitledModelRecord] =
-    React.useState(untitledModel);
+  const [untitledModelRecord, setUntitledModelRecord] = React.useState(
+    untitledModelModelProp
+  );
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
         ? await DataStore.query(UntitledModel, idProp)
-        : untitledModel;
+        : untitledModelModelProp;
       setUntitledModelRecord(record);
     };
     queryData();
-  }, [idProp, untitledModel]);
+  }, [idProp, untitledModelModelProp]);
   React.useEffect(resetStateValues, [untitledModelRecord]);
   const validations = {};
   const runValidationTasks = async (
@@ -49,9 +50,10 @@ export default function UntitledModelUpdateForm(props) {
     currentValue,
     getDisplayValue
   ) => {
-    const value = getDisplayValue
-      ? getDisplayValue(currentValue)
-      : currentValue;
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -125,7 +127,7 @@ export default function UntitledModelUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || untitledModel)}
+          isDisabled={!(idProp || untitledModelModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -137,7 +139,7 @@ export default function UntitledModelUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || untitledModel) ||
+              !(idProp || untitledModelModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

@@ -4,20 +4,23 @@
       "name": "Mj Iraldi",
       "season": "2023",
       "numberOfGoals": 9,
-      "numberOfAssists": 2
+      "numberOfAssists": 2,
+      "team": "Chestnut hill colllege"
     },
     {
         "playerID": "2",
         "name": "Amir Warrick",
         "season": "2023",
         "numberOfGoals": 4,
-        "numberOfAssists": 7
+        "numberOfAssists": 7,
+        "team": "Chestnut hill colllege"
       },
     {
         "playerID": "3",
         "name": "Nigel Haughton",
         "season": "2023",
         "numberOfGoals": 8,
-        "numberOfAssists": 5
+        "numberOfAssists": 5,
+        "team": "Chestnut hill colllege"
       }
   ]
